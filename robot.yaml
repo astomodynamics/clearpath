@@ -1,0 +1,21 @@
+serial_number: j100-0857
+version: 0
+constants:
+  pi: 3.1415926535897931
+system:
+  username: administrator
+  hosts:
+    - hostname: cpr-j100-0857
+      ip: 192.168.131.1
+  ros2:
+    namespace: j100_0857
+    workspaces:
+      - "/home/administrator/ros_ws/install/setup.bash"
+platform:
+  controller: ps4
+  attachments:
+    - name: front_fender
+      type: j100.fender
+    - name: rear_fender
+      type: j100.fender
+      rpy: [0.0, 0.0, 3.1415]
