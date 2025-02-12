@@ -10,7 +10,7 @@ system:
   ros2:
     namespace: j100_0857
     workspaces:
-      - "/home/administrator/ros_ws/install/setup.bash"
+      - "/home/administrator/install/setup.bash"
 platform:
   controller: ps4
   attachments:
@@ -19,3 +19,113 @@ platform:
     - name: rear_fender
       type: j100.fender
       rpy: [0.0, 0.0, 3.1415]
+links:
+  mesh: # TODO: required: sudo apt-get install admesh
+    - name: jackal_tower_link
+      xyz: [0.0, 0.0, 0.0]
+      rpy: [0.0, 0.0, 0.0]
+      parent: rear_0_mount
+      visual: 
+        package: git42_description
+        path: "meshes/Jackal_Sensor_Tower_016445_1_binary.stl"
+        material: 
+          name: Jackal_Sensor_Tower_016445_1_binary
+          color: [0.0, 0.0, 0.0, 1.0] # black
+      collision:
+        xyz: [0.0, 0.0, 0.0]
+        rpy: [0.0, 0.0, 0.0]
+        package: git42_description
+        mesh: "meshes/Jackal_Sensor_Tower_016445_1_binary.stl"
+    - name: cross_bar_link
+      parent: base_link  # Added parent
+      xyz: [-0.075, 0.0, 0.415]  # Moved joint transform here
+      rpy: [1.5708, 1.5708, 0.0]
+      visual:
+        package: git42_description
+        path: "meshes/2040_x_150mm_Extruded_Aluminum_T-Slot_binary.stl"
+        material:
+          name: 2040_x_150mm_Extruded_Aluminum_T-Slot_binary
+          color: [0.0, 0.0, 0.0, 1.0]
+      collision:
+        xyz: [0.0, 0.0, 0.0]
+        rpy: [0.0, 0.0, 0.0]
+        package: git42_description
+        mesh: "meshes/2040_x_150mm_Extruded_Aluminum_T-Slot_binary.stl"
+    - name: swift_navsat_link
+      parent: rear_0_mount  # Added parent
+      xyz: [-0.05, 0.0, 0.3]  # Moved joint transform here
+      rpy: [0.0, 0.0, 0.0]
+      visual:
+        package: git42_description
+        path: "meshes/Swiftnav_Antenna_binary.stl"
+        material:
+          name: Swiftnav_Antenna_binary
+          # none of the sensors have a color
+          color: [0.0, 0.0, 0.0, 1.0]
+      collision:
+        xyz: [0.0, 0.0, 0.0]
+        rpy: [0.0, 0.0, 0.0]
+        package: git42_description
+        mesh: "meshes/Swiftnav_Antenna_binary.stl"
+    - name: swiftnav_duro_link
+      parent: rear_0_mount  # Added parent
+      xyz: [0.0, 0.0, 0.005]  # Moved joint transform here
+      rpy: [0.0, 0.0, 0.0]
+      visual:
+        package: git42_description
+        path: "meshes/Swiftnav_Duro_Receiver_binary.stl"
+        material:
+          name: Swiftnav_Antenna_binary
+          color: [0.0, 0.0, 0.0, 1.0]
+      collision:
+        xyz: [0.0, 0.0, 0.0]
+        rpy: [0.0, 0.0, 0.0]
+        package: git42_description
+        mesh: "meshes/Swiftnav_Duro_Receiver_binary.stl"
+mounts:
+  bracket:
+  - parent: front_0_mount
+    xyz: [0.0, 0.0, 0.0]
+    rpy: [0.0, 0.0, 0.0]
+    model: horizontal
+  - parent: rear_0_mount
+    xyz: [0.0, 0.0, 0.0]
+    rpy: [0.0, 0.0, 0.0]
+    model: horizontal
+  fath_pivot:
+  - parent: default_mount
+    xyz: [-0.065, 0.0, 0.240]  # from xyz="-0.065 0 0.240"
+    rpy: [0.0, 1.5708, 0.0]    # from rpy="0 ${(PI / 2)} 0"
+    model: horizontal
+    angle: -1.5708          # from angle="${(PI / -2)}"
+sensors:
+  lidar3d:
+  - model: velodyne_lidar
+    urdf_enabled: true
+    launch_enabled: true
+    parent: front_0_mount
+    xyz: [0.0, 0.0, 0.0] 
+    rpy: [0.0, 0.0, 0.0]
+    ros_parameters:
+      velodyne_driver_node:
+        frame_id: lidar3d_0_laser
+        device_ip: 192.168.131.25
+        port: 2368
+        model: VLP16
+      velodyne_transform_node:
+        model: VLP16
+        fixed_frame: lidar3d_0_laser
+        target_frame: lidar3d_0_laser
+  imu:
+  - model: microstrain_imu
+    urdf_enabled: true
+    launch_enabled: true
+    parent: base_link
+    xyz: [-0.139, 0.0, 0.15]  # From JACKAL_IMU_MICROSTRAIN_OFFSET
+    rpy: [0.0, 0.0, 3.4464]   # From JACKAL_IMU_MICROSTRAIN_RPY
+    ros_parameters:
+      microstrain_inertial_driver: # FIXME: Check the correct driver name
+        port: /dev/microstrain_main  # From JACKAL_IMU_MICROSTRAIN_PORT
+        frame_id: imu_0_link  # From JACKAL_IMU_MICROSTRAIN_LINK #FIXME: Check the correct frame
+        baudrate: 115200    # From JACKAL_IMU_MICROSTRAIN_BAUDRATE
+        use_enu_frame: true #FIXME: Check the correct frame

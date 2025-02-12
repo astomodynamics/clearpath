@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+ 
+  <!-- Colors / Materials Variables -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+ 
+  <!--Tower-->
+  <link name="jackal_tower_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Jackal Sensor Tower (016445_1).STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Jackal Sensor Tower (016445_1).STL"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="jackal_tower_joint" type="fixed">
+    <parent link="rear_mount" />
+    <child link="jackal_tower_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Fath Pivot Mount -->
+  <xacro:include filename="$(find fath_pivot_mount_description)/urdf/lockmount.urdf.xacro" />
+
+  <xacro:fath_pivot_mount prefix="zed2_lock" parent_link="mid_mount" angle="${(PI / -2)}">
+    <origin xyz="-0.065 0 0.240" rpy="0 ${(PI / 2)} 0" />
+  </xacro:fath_pivot_mount>
+ 
+  <!-- Crossbar Metalwork -->
+  <link name="crossbar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${(PI / 2)} ${(PI / 2)} 0"/>
+      <material name="black"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/2040 x 150mm Extruded Aluminum T-Slot.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/2040 x 150mm Extruded Aluminum T-Slot.STL"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="crossbar_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="crossbar_link" />
+    <origin xyz="-0.075 0.0 0.415" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Wifi 1 Antenna -->
+  <link name="wifi1_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Wifi_Antenna.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.15" radius="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="wifi1_joint" type="fixed">
+    <parent link="rear_mount" />
+    <child link="wifi1_link" />
+    <origin xyz="0.0 -0.13 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Wifi 2 Antenna -->
+  <link name="wifi2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Wifi_Antenna.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.15" radius="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="wifi2_joint" type="fixed">
+    <parent link="rear_mount" />
+    <child link="wifi2_link" />
+    <origin xyz="0.0 0.13 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Swift GPS Antenna -->
+  <link name="swift_navsat_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Swiftnav_Antenna.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Swiftnav_Antenna.STL"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="swift_navsat_joint" type="fixed">
+    <parent link="rear_mount" />
+    <child link="swift_navsat_link" />
+    <origin xyz="-0.05 0.0 0.3" rpy="0 0 0"/>
+  </joint>
+
+  <!-- SwiftNav Duro Reciever-->
+  <link name="swiftnav_duro_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="yellow"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Swiftnav_Duro_Receiver.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://git42_description/meshes/Swiftnav_Duro_Receiver.STL"/>
+      </geometry>
+    </collision>
+  </link>
+ 
+  <joint name="swiftnav_duro_joint" type="fixed">
+    <parent link="rear_mount" />
+    <child link="swiftnav_duro_link" />
+    <origin xyz="0.0 0.0 0.005" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Zed 2 -->
+  <xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro" />
+ 
+  <xacro:zed_camera name="zed2" model="zed2" parent="zed2_lock_mount">
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+  </xacro:zed_camera>
+
+</robot>
