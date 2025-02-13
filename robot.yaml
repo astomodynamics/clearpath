@@ -10,7 +10,11 @@ system:
   ros2:
     namespace: j100_0857
     workspaces:
-      - "/home/administrator/install/setup.bash"
+      - "/home/administrator/ros2_ws/install/setup.bash"
+      # - "/home/tom/ros_ws/install/setup.bash"
+      # - "/home/tom/ros_ws/install/setup.bash"
+      # - "/home/tom/clearpath_ws/install/setup.bash"
+      # - "/home/tom/zed_ws/install/setup.bash"
 platform:
   controller: ps4
   attachments:
@@ -129,3 +133,51 @@ sensors:
         frame_id: imu_0_link  # From JACKAL_IMU_MICROSTRAIN_LINK #FIXME: Check the correct frame
         baudrate: 115200    # From JACKAL_IMU_MICROSTRAIN_BAUDRATE
         use_enu_frame: true #FIXME: Check the correct frame
+  camera: # TODO: Zed wrapper needed: https://docs.clearpathrobotics.com/docs/ros/config/yaml/sensors/cameras
+  - model: stereolabs_zed
+    urdf_enabled: true
+    launch_enabled: true
+    parent: fath_pivot_0_mount
+    xyz: [0.0, 0.0, 0.0]
+    rpy: [0.0, 0.0, 0.0]
+    ros_parameters:
+      stereolabs_zed: # FIXME: Check parameters
+        general.grab_frame_rate: 30
+        general.pub_frame_rate: 30
+        general.serial_number: 0
+        general.camera_model: 'zed2'
+        general.grab_resolution: 'AUTO'
+        general.gpu_id: -1
+        general.pub_resolution: "NATIVE"
+        general.camera_name: 'zed2'
+
+        depth.depth_mode: "ULTRA"
+        depth.depth_stabilization: 1
+        depth.point_cloud_freq: 10.0
+        depth.depth_confidence: 50
+        depth.depth_texture_conf: 100
+        depth.remove_saturated_areas: true
+
+        pos_tracking.pos_tracking_enabled: true
+        pos_tracking.pos_tracking_mode: "GEN_2"
+        pos_tracking.imu_fusion: true
+        pos_tracking.publish_tf: true
+        pos_tracking.publish_map_tf: false
+        pos_tracking.area_memory: true
+        pos_tracking.reset_odom_with_loop_closure: true
+        pos_tracking.initial_base_pose: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        pos_tracking.path_pub_rate: 2.0
+
+        sensors.publish_imu_tf: false
+        sensors.sensors_image_sync: false
+        sensors.sensors_pub_rate: 200.0
+
+        object_detection.od_enabled: false
+        object_detection.model: "MULTI_CLASS_BOX_MEDIUM"
+        object_detection.confidence_threshold: 50.0
+
+        advanced.thread_sched_policy: "SCHED_BATCH"
+        advanced.thread_grab_priority: 50
+        advanced.thread_sensor_priority: 70
+        advanced.thread_pointcloud_priority: 60
+
