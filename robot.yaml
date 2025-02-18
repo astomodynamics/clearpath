@@ -126,7 +126,7 @@ sensors:
     ros_parameters:
       stereolabs_zed: # FIXME: Check parameters
         general.grab_frame_rate: 30
-        general.pub_frame_rate: 30
+        general.pub_frame_rate: 30.0
         general.serial_number: 0
         general.camera_model: 'zed2'
         general.grab_resolution: 'AUTO'
